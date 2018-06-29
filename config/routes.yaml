@@ -1,0 +1,59 @@
+telegramNewMessage:
+    path: /telegram/newmessage/
+    controller: Cartbot\Infrastructure\Controller\TelegramNewMessageController::newMessage
+
+assistantNewMessage:
+    path: /assistant/newmessage/
+    controller: Cartbot\Infrastructure\Controller\AssistantNewMessageController::newMessage
+
+rootPath:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: dashboardUserClientRoot
+        permanent: false
+
+UlaboxAutorizeByUser:
+    path: /authorizeinclient/
+    controller: Cartbot\Infrastructure\Controller\UlaboxAuthorizeByUser:login
+
+login:
+    path: /login/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\LoginController::login
+
+logout:
+    path: /logout
+
+dashboardUserClientRoot:
+    path: /a/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::inicio
+
+dashboardUserClientEvents:
+    path: /a/events/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::events
+
+dashboardConfigure:
+    path: /a/users/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::configure
+
+
+lastEvents:
+    path: /a/ax/lastevents/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::lastEvents
+
+lastSevenDaysEvents:
+    path: /a/ax/lastseven/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::lastSevenDaysEvents
+
+findEvents:
+    path: /a/ax/findEvents/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::findEvents
+
+changePass:
+    path: /a/ax/changepass/
+    controller: CartbotPrivate\Infrastructure\Controller\Admin\DashBoardController::changePass
+
+
+loginClientFake:
+    path: /loginclientfake/
+    controller: App\Controller\FakeLogin::login

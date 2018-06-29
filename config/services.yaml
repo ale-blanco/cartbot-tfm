@@ -1,0 +1,173 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+  customerTokenLogin: '%env(CUSTOMER_TOKEN_LOGIN)%'
+  ulaboxSecurityAuthCode: '%env(SECURITY_CODE_AUTH_ULABOX)%'
+  assistantRequestUser: '%env(ASSISTANT_REQUEST_USER)%'
+  assistantRequestPass: '%env(ASSISTANT_REQUEST_PASSWORD)%'
+  locale: "en"
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+        bind:
+            Cartbot\Domain\User\UserChatRepository: '@Cartbot\Infrastructure\Repository\DoctrineUserChatRepository'
+            Cartbot\Domain\User\UserRepository: '@Cartbot\Infrastructure\Repository\DoctrineUserRepository'
+            Cartbot\Domain\User\ITokenRepositoryFactory: '@Cartbot\Infrastructure\Repository\Factory\TokenRepositoryFactory'
+            Cartbot\Domain\Cart\ICartRepositoryFactory: '@Cartbot\Infrastructure\Repository\Factory\CartRepositoryFactory'
+            Cartbot\Domain\Product\IProductRepositoryFactory: '@Cartbot\Infrastructure\Repository\Factory\ProductRepositoryFactory'
+            CartbotPrivate\Domain\Action\ActionRepository: '@CartbotPrivate\Infrastructure\Repository\ElasticActionRepository'
+            Cartbot\Domain\Client\ClientRepository: '@Cartbot\Infrastructure\Repository\DoctrineClientRepository'
+            CartbotPrivate\Domain\User\UserClientRepository: '@CartbotPrivate\Infrastructure\Repository\DoctrineUserClientRepository'
+            CartbotPrivate\Domain\Services\PasswordEncoder: '@CartbotPrivate\Infrastructure\Services\Symfony\Encoder'
+            CartbotPrivate\Domain\Services\PasswordChecker: '@CartbotPrivate\Infrastructure\Services\Symfony\Checker'
+            Cartbot\Domain\Services\EventBus: '@Cartbot\Infrastructure\Services\SimpleBusEventBus'
+            Cartbot\Application\Services\IUserService: '@Cartbot\Application\Services\UserService'
+            Cartbot\Domain\Chat\ISenderChatFactory: '@Cartbot\Infrastructure\Services\SenderChatFactory'
+            Cartbot\Domain\User\UserStartRepository: '@Cartbot\Infrastructure\Repository\DoctrineUserStartRepository'
+            $tokenTelegram: '%env(TOKEN_TELEGRAM)%'
+            $ulaboxApiKey: '%env(ULABOX_APIKEY)%'
+            $saltForAuthCode: '%env(SALT_FOR_AUTH_CODE)%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    UlaboxApi\:
+        resource: '../src/UlaboxApi/*'
+        exclude: '../src/UlaboxApi/{Entity,Migrations,Tests,Kernel.php,Actions,Http,Models}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Cartbot\Infrastructure\Controller\:
+        resource: '../src/Cartbot/Infrastructure/Controller'
+        tags: ['controller.service_arguments']
+
+    CartbotPrivate\Infrastructure\Controller\:
+        resource: '../src/CartbotPrivate/Infrastructure/Controller'
+        tags: ['controller.service_arguments']
+
+    CartbotPrivate\Infrastructure\Commands\:
+        resource: '../src/CartbotPrivate/Infrastructure/Commands'
+        tags: ['console.command']
+
+    CartbotPrivate\Application\CommandHandlers\:
+        resource: '../src/CartbotPrivate/Application/CommandHandlers/*'
+
+    CartbotPrivate\Infrastructure\Services\:
+        resource: '../src/CartbotPrivate/Infrastructure/Services/*'
+
+    Cartbot\Application\Services\:
+        resource: '../src/Cartbot/Application/Services/*'
+
+    Cartbot\Infrastructure\Services\:
+        resource: '../src/Cartbot/Infrastructure/Services/*'
+
+    Cartbot\Infrastructure\Repository\Factory\:
+        resource: '../src/Cartbot/Infrastructure/Repository/Factory/*'
+
+
+    Cartbot\Application\CommandHandlers\ListCart:
+        tags:
+            - { name: command_handler, handles: Cartbot\Application\Commands\ListCartComm }
+
+    Cartbot\Application\CommandHandlers\AddProduct:
+        tags:
+            - { name: command_handler, handles: Cartbot\Application\Commands\AddProductComm }
+
+    Cartbot\Application\CommandHandlers\NotUnderstood:
+        tags:
+            - { name: command_handler, handles: Cartbot\Application\Commands\NotUnderstoodComm }
+
+    Cartbot\Application\CommandHandlers\Start:
+        tags:
+            - { name: command_handler, handles: Cartbot\Application\Commands\StartComm }
+
+    Cartbot\Application\CommandHandlers\AuthorizeForClient:
+        tags:
+            - { name: command_handler, handles: Cartbot\Application\Commands\AuthorizeForClientComm }
+
+
+    Cartbot\Application\EventHandlers\ListCartResponse:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\Cart\ListCartEvent }
+
+    Cartbot\Application\EventHandlers\AddProductResponse:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\Product\AddProductEvent }
+
+    Cartbot\Application\EventHandlers\NotUnderstoodResponse:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\User\NotUnderstoodEvent }
+
+    Cartbot\Application\EventHandlers\StartResponse:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\User\StartEvent }
+
+    Cartbot\Application\EventHandlers\AuthorizeCorrectResponse:
+         tags:
+             - { name: event_subscriber, subscribes_to: Cartbot\Domain\User\AuthorizeCorrectEvent }
+
+    CartbotPrivate\Application\EventHandlers\ListCartSaveEvent:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\Cart\ListCartEvent }
+
+    CartbotPrivate\Application\EventHandlers\AddProductSaveEvent:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\Product\AddProductEvent }
+
+    CartbotPrivate\Application\EventHandlers\NotUnderstoodSaveEvent:
+        tags:
+            - { name: event_subscriber, subscribes_to: Cartbot\Domain\User\NotUnderstoodEvent }
+
+    CartbotPrivate\Application\EventHandlers\AuthorizeCorrectSaveEvent:
+         tags:
+             - { name: event_subscriber, subscribes_to: Cartbot\Domain\User\AuthorizeCorrectEvent }
+
+
+
+    Cartbot\Infrastructure\Repository\UlaboxTokenRepository:
+        class: Cartbot\Infrastructure\Repository\UlaboxTokenRepository
+
+    Cartbot\Infrastructure\Repository\UlaboxCartRepository:
+        class: Cartbot\Infrastructure\Repository\UlaboxCartRepository
+
+    Cartbot\Infrastructure\Repository\UlaboxProductRepository:
+        class: Cartbot\Infrastructure\Repository\UlaboxProductRepository
+
+    Cartbot\Infrastructure\Repository\DoctrineUserChatRepository:
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: ["Cartbot\\Domain\\User\\UserChat"]
+
+    Cartbot\Infrastructure\Repository\DoctrineUserRepository:
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: ["Cartbot\\Domain\\User\\User"]
+
+    Cartbot\Infrastructure\Repository\DoctrineClientRepository:
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: ["Cartbot\\Domain\\Client\\Client"]
+
+    Cartbot\Infrastructure\Repository\DoctrineUserStartRepository:
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: ["Cartbot\\Domain\\User\\UserStart"]
+
+    CartbotPrivate\Infrastructure\Repository\DoctrineUserClientRepository:
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: ["CartbotPrivate\\Infrastructure\\Entity\\SymfonyUserClient"]
+
+    CartbotPrivate\Infrastructure\Repository\ElasticClient:
+        $host_elastic: '%env(HOST_ELASTIC)%'
+
+
+    CartbotPrivate\Infrastructure\Repository\ElasticActionRepository:
+        class: CartbotPrivate\Infrastructure\Repository\ElasticActionRepository
+
+
+
+
+    App\Controller\:
+        resource: '../src/App/Controller'
+        tags: ['controller.service_arguments']

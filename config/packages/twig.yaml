@@ -1,0 +1,6 @@
+twig:
+    paths:
+      '%kernel.project_dir%/src/CartbotPrivate/Infrastructure/templates': __main__
+      '%kernel.project_dir%/src/App/templates': __main__
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'

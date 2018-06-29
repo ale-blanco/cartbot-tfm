@@ -1,0 +1,41 @@
+Cartbot\Domain\User\UserStart:
+    type: entity
+    repositoryClass: Cartbot\Infrastructure\Repository\DoctrineUserStartRepository
+    table: userStart
+
+    id:
+        code:
+            type: string
+            nullable: false
+            id: true
+            column: code
+            length: 40
+
+    fields:
+        idUserChat:
+            type: string
+            length: 100
+            nullable: false
+            column: idUserChat
+        chatType:
+            type: string
+            nullable: false
+            length: null
+            column: chatType
+            options:
+                fixed: false
+
+    manyToOne:
+        client:
+            targetEntity: "Cartbot\\Domain\\Client\\Client"
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idClient:
+                    referencedColumnName: idClient
+                    nullable: false
+
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

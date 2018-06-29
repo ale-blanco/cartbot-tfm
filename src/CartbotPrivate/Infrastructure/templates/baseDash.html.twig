@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Cartbot area privada{% endblock %}
+
+{% block stylesheets %}
+    {% block stylesheetsDash %}{%  endblock %}
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('build/dashboard.css') }}">
+{%  endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+        <div class="navbar-brand col-sm-3 col-md-2 mr-0">
+            <button class="navbar-toggler d-block d-sm-none" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="#">
+                <img src="/img/minilogo2.png" class="d-none d-sm-block" alt="logotipo cartbot">
+            </a>
+        </div>
+        <ul class="navbar-nav px-3 d-none d-sm-block">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{{ path('logout') }}" data-toggle="tooltip" data-placement="bottom" title="Salir">
+                    <i class="fa fa-2x fa-sign-out exitBtn"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <nav class="col-md-2 bg-light sidebar lateralMenu d-block d-sm-none">
+            {%  include 'menu.html.twig' with {'withExit': true } %}
+        </nav>
+    </div>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <nav class="col-sm-2 d-none d-sm-block bg-light sidebar lateralMenu">
+                {%  include 'menu.html.twig' with {'withExit': false } %}
+            </nav>
+            <main class="col-sm-9 ml-sm-auto col-lg-10 px-4">
+                {% block bodyDash %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% block javascriptsDash %}{%  endblock %}
+    <script src="{{ asset('build/dashboard.js') }}"></script>
+    {% block initialScript %}{%  endblock %}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{%  endblock %}

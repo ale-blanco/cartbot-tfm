@@ -1,0 +1,103 @@
+body {
+    overflow: hidden;
+}
+
+main {
+    overflow: auto;
+}
+
+.btn {
+    padding: 0.6rem 1rem;
+}
+
+.exitBtn{
+    color: white;
+}
+
+.lateralMenu {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    max-width: 250px;
+    padding: 20px 0 0 0;
+}
+
+.lateralMenu a {
+    color: black;
+    font-weight: bold;
+    padding: 10px 15px;
+    display: flex;
+    align-content: center;
+}
+
+.lateralMenu .nav-item a:hover {
+    background-color: aliceblue;
+    color: #688214;
+}
+
+.lateralMenu li.active a span:after {
+    content: url('/img/micrologo.png');
+}
+
+.card-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+#cardchartProducts {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#cardConfigure {
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+#frmListEvents label{
+    margin: 0 10px 0 0 ;
+}
+
+#frmListEvents .form-group {
+    margin: 0 16px 0 0;
+}
+
+.tableHead {
+    background-color: aliceblue;
+    text-align: center;
+}
+
+.tableHead i {
+    margin-left: 6px;
+}
+
+#rowsPagination {
+    height: 37px;
+    line-height: 37px;
+    vertical-align: middle;
+}
+
+#navPagination {
+    margin: 0 14px;
+}
+
+#loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 75%;
+    border-top: 8px solid #3498db;
+    width: 30px;
+    height: 30px;
+    -webkit-animation: spin .7s linear infinite;
+    animation: spin 1s linear infinite;
+    position: relative;
+    left: 50%;
+    display: none;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

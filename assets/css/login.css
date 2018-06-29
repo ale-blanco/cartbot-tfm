@@ -1,0 +1,25 @@
+body {
+    background-color: aliceblue;
+}
+
+.btn {
+    padding: 0.6rem 1rem;
+}
+
+#divlogin{
+    width: 50%;
+    margin: 20px auto 0 auto;
+    max-width: 400px;
+    padding: 40px;
+    background-color: white;
+}
+
+#logoCartBot {
+    margin-top: 30px;
+}
+
+@media (max-width: 576px) {
+    #divlogin{
+        width: 90%;
+    }
+}

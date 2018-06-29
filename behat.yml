@@ -1,0 +1,20 @@
+default:
+    autoload:
+        '': "%paths.base%/tests/"
+
+    suites:
+        default:
+            paths:
+              - "%paths.base%/tests/CartbotIntegration/Application/CommandHandlers/Feature"
+              - "%paths.base%/tests/CartbotPrivateIntegration/Application/CommandHandlers/Admin/Feature"
+              - "%paths.base%/tests/CartbotIntegration/Application/User/Feature"
+            contexts:
+              - CartbotIntegration\Application\CommandHandlers\Context\AddProductContext
+              - CartbotIntegration\Application\CommandHandlers\Context\CreateUserClientContext
+              - CartbotIntegration\Application\CommandHandlers\Context\ListCartContext
+              - CartbotIntegration\Application\CommandHandlers\Context\NotUnderstoodContext
+              - CartbotPrivateIntegration\Application\CommandHandlers\Admin\Context\ChangePassContext
+              - CartbotPrivateIntegration\Application\CommandHandlers\Admin\Context\LastSevenDaysEventsContext
+              - CartbotPrivateIntegration\Application\CommandHandlers\Admin\Context\LastEventsContext
+              - CartbotPrivateIntegration\Application\CommandHandlers\Admin\Context\FindEventsContext
+              - CartbotIntegration\Application\User\Context\UserServiceContext

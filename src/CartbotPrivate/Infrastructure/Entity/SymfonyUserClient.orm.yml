@@ -1,0 +1,59 @@
+CartbotPrivate\Infrastructure\Entity\SymfonyUserClient:
+    type: entity
+    repositoryClass: CartbotPrivate\Infrastructure\Repository\DoctrineUserClientRepository
+    table: userClient
+    indexes:
+        username_idx:
+            columns: [ username ]
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: idUserClient
+            generator:
+                strategy: IDENTITY
+    fields:
+        username:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: username
+        password:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: true
+            column: password
+        email:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: true
+            column: email
+        isActive:
+            type: string
+            nullable: false
+            column: active
+
+    manyToOne:
+        client:
+            targetEntity: "Cartbot\\Domain\\Client\\Client"
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            optional: false
+            joinColumns:
+                idClient:
+                    referencedColumnName: idClient
+                    nullable: false
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

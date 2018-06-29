@@ -1,0 +1,39 @@
+Cartbot\Domain\Client\Client:
+    type: entity
+    repositoryClass: Cartbot\Infrastructure\Repository\DoctrineClientRepository
+    table: client
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: idClient
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 125
+            options:
+                fixed: false
+
+        urlAuth:
+            type: string
+            nullable: false
+            length: 255
+            column: urlAuth
+            options:
+                fixed: false
+
+        idClientAuth:
+            type: string
+            nullable: false
+            length: 255
+            column: idClientAuth
+            options:
+                fixed: false
+
+    lifecycleCallbacks: {  }

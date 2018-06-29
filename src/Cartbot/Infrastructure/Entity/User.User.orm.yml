@@ -1,0 +1,51 @@
+Cartbot\Domain\User\User:
+    type: entity
+    repositoryClass: Cartbot\Infrastructure\Repository\DoctrineUserRepository
+    table: user
+    indexes:
+        client_name_idx:
+            columns: [ idClient, name ]
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: idUser
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        customerToken:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: true
+            column: customerToken
+        dateRegenerated:
+            type: datetime
+            nullable: false
+            column: customerTokenCreated
+
+    manyToOne:
+        client:
+            targetEntity: "Cartbot\\Domain\\Client\\Client"
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idClient:
+                    referencedColumnName: idClient
+                    nullable: false
+
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

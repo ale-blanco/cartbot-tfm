@@ -1,0 +1,41 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        CartbotPrivate\Domain\User\UserClient:
+            algorithm: bcrypt
+
+    providers:
+        dbProvider:
+            entity:
+                class: CartbotPrivate\Infrastructure\Entity\SymfonyUserClient
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            form_login:
+              login_path: login
+              check_path: login
+              default_target_path: dashboardUserClientRoot
+              always_use_default_target_path: true
+            logout:
+              path: /logout
+              target: /
+              invalidate_session: true
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/a/, roles: ROLE_ADMIN }
