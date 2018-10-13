@@ -1,5 +1,5 @@
-CartBot
-=======
+Shopping ChatBot 
+================
 
 Codigo del trabajo fin de master realizado para el master Programacion web de alto rendimiento en la Universidad Ramon Llull.
 
